@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include <iostream>
-
+#include <string.h>
+#include "exception.h"
 using namespace std;
 
 template <typename T>
@@ -38,6 +39,15 @@ int main(int argc, char *argv[])
     cout << test.pop() << endl << endl;
     test.print_s();
     cout << endl << "Size of stack: " << test.getStackSize() << endl;
+
+    cout << endl << "Now pop(): ";
+    cout << test.pop() << endl << endl;
+    test.print_s();
+    cout << endl << "Now pop(): ";
+    cout << test.pop() << endl << endl;
+    test.print_s();
+    cout << endl << "Now pop(): ";
+    cout << test.pop() << endl << endl; // Обработка исключения
     return a.exec();
 }
 
@@ -45,25 +55,37 @@ int main(int argc, char *argv[])
 template <typename T>
 void my_stack<T>::push(T &value)
 {
-    if (top < size_s) // Пока так
+    try {
+        if (top >= size_s)
+            throw exc::EStackException("Stack overflow!");
         stack_p[top++] = value; // помещаем элемент в стек, нужен top++
-    else
-        cout << "Stack is full";
+    }
+    catch (const exc::EStackException& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
 }
 template <typename T>
 void my_stack<T>::print_s()
 {
     for (int i = top - 1; i >= 0; i--)
-        cout << " | " << stack_p[i] << endl;
+        std::cout << " | " << stack_p[i] << std::endl;
 }
 template <typename T>
 T my_stack<T>::pop()
 {
-    T s;
-    // номер текущего элемента должен быть больше 0
-    s = stack_p[top - 1]; // запоминаем удаляемый эл-т для ретерна
-    stack_p[--top] = 0; // удаляем сам этот элемент
-    return s;
+    try {
+        if (top <= 0)
+            throw exc::EStackEmpty("Stack is empty!");
+        T s;
+        // номер текущего элемента должен быть больше 0
+        s = stack_p[top - 1]; // запоминаем удаляемый эл-т для ретерна
+        stack_p[--top] = 0; // удаляем сам этот элемент
+        return s;
+    }
+    catch (const exc::EStackException& e){
+        std::cerr << "Error: " << e.what() << std::endl;
+        return -1;
+    }
 }
 
 template <typename T>
