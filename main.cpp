@@ -10,9 +10,9 @@ class my_stack //: public QObject
 private:
     T *stack_p; // указатель на стек
     int top; // номер текущего элемента стека
-    const int size_s = 10;
+    const int size_s;
 public:
-    my_stack() { // конструктор
+    my_stack(int maxsize = 10) : size_s(maxsize) { // конструктор
         stack_p = new T[size_s];
         top = 0;
     };
@@ -22,15 +22,20 @@ public:
     void push(T &); // поместить элемент на вершину стека
     void print_s(); // вывод стека
     T pop(); // удаление элемента из вершины
+    int getStackSize(); // получение размера стека
 };
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    my_stack<char> test;
-    char ch = '2';
+    my_stack<char> test(5);
+    char ch = '3', cc = '2', hh = '1';
     test.push(ch);
+    test.push(cc);
+    test.push(hh);
+    test.pop();
     test.print_s();
+    cout << "Size of stack: " << test.getStackSize() << endl;
     return a.exec();
 }
 
@@ -61,4 +66,10 @@ T my_stack<T>::pop()
     else
         cout << "top < 0";
     return s;
+}
+
+template <typename T>
+int my_stack<T>::getStackSize()
+{
+    return size_s;
 }
