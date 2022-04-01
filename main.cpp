@@ -33,9 +33,11 @@ int main(int argc, char *argv[])
     test.push(ch);
     test.push(cc);
     test.push(hh);
-    test.pop();
     test.print_s();
-    cout << "Size of stack: " << test.getStackSize() << endl;
+    cout << endl << "Now pop(): ";
+    cout << test.pop() << endl << endl;
+    test.print_s();
+    cout << endl << "Size of stack: " << test.getStackSize() << endl;
     return a.exec();
 }
 
@@ -44,7 +46,7 @@ template <typename T>
 void my_stack<T>::push(T &value)
 {
     if (top < size_s) // Пока так
-        stack_p[top++] = value; // помещаем элемент в стек (начинается с 1)
+        stack_p[top++] = value; // помещаем элемент в стек, нужен top++
     else
         cout << "Stack is full";
 }
@@ -57,14 +59,10 @@ void my_stack<T>::print_s()
 template <typename T>
 T my_stack<T>::pop()
 {
-    int s;
-    if (top > 0) {// номер текущего элемента должен быть больше 0
-        s = stack_p[top];
-        stack_p[top] = 0;
-        top--;
-    }
-    else
-        cout << "top < 0";
+    T s;
+    // номер текущего элемента должен быть больше 0
+    s = stack_p[top - 1]; // запоминаем удаляемый эл-т для ретерна
+    stack_p[--top] = 0; // удаляем сам этот элемент
     return s;
 }
 
