@@ -1,7 +1,9 @@
 #include <QCoreApplication>
 #include <iostream>
 #include <string.h>
+
 #include "exception.h"
+
 using namespace std;
 
 template <typename T>
@@ -9,12 +11,12 @@ class my_stack //: public QObject
 {
     //Q_OBJECT; // Не знаю почему, но с этим всё ломается
 private:
-    T *stack_p; // указатель на стек
+    T* stack_p; // указатель на стек
     int top; // номер текущего элемента стека
-    const int size_s;
+    const int SIZE_S;
 public:
-    my_stack(int maxsize = 10) : size_s(maxsize) { // конструктор
-        stack_p = new T[size_s];
+    my_stack(int maxsize = 10) : SIZE_S(maxsize) { // конструктор
+        stack_p = new T[SIZE_S];
         top = 0;
     };
     ~my_stack(){ // деструктор
@@ -56,7 +58,7 @@ template <typename T>
 void my_stack<T>::push(T &value)
 {
     try {
-        if (top >= size_s)
+        if (top >= SIZE_S)
             throw exc::EStackException("Stack overflow!");
         stack_p[top++] = value; // помещаем элемент в стек, нужен top++
     }
@@ -74,10 +76,9 @@ template <typename T>
 T my_stack<T>::pop()
 {
     try {
-        if (top <= 0)
+        if (top <= 0) // номер текущего элемента должен быть больше 0
             throw exc::EStackEmpty("Stack is empty!");
         T s;
-        // номер текущего элемента должен быть больше 0
         s = stack_p[top - 1]; // запоминаем удаляемый эл-т для ретерна
         stack_p[--top] = 0; // удаляем сам этот элемент
         return s;
@@ -91,5 +92,5 @@ T my_stack<T>::pop()
 template <typename T>
 int my_stack<T>::getStackSize()
 {
-    return size_s;
+    return SIZE_S;
 }
