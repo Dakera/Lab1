@@ -13,7 +13,7 @@ class my_stack //: public QObject
 private:
     T* stack_p; // указатель на стек
     int top; // номер текущего элемента стека
-    const int SIZE_S;
+    const int SIZE_S; // размер стека
 public:
     my_stack(int maxsize = 10) : SIZE_S(maxsize) { // конструктор
         stack_p = new T[SIZE_S];
@@ -37,10 +37,12 @@ int main(int argc, char *argv[])
     test.push(cc);
     test.push(hh);
     test.print_s();
+
+    cout << endl << "Size of stack: " << test.getStackSize() << endl;
+
     cout << endl << "Now pop(): ";
     cout << test.pop() << endl << endl;
     test.print_s();
-    cout << endl << "Size of stack: " << test.getStackSize() << endl;
 
     cout << endl << "Now pop(): ";
     cout << test.pop() << endl << endl;
