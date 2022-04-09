@@ -5,7 +5,7 @@
  https://ru.stackoverflow.com/questions/937440/Не-работает-обьявление-шаблона-класса-в-заголовочном-файле-с-определением-методо
 
  Нельзя выносить реализацию шаблонного класса в отдельный cpp файл
- */
+*/
 
 #include <iostream>
 #include <string>
@@ -21,6 +21,7 @@ private:
     T* stack_p; // указатель на стек
     int top; // номер текущего элемента стека
     const int SIZE_S; // размер стека
+    //int SIZE_S; // размер стека
 public:
     my_stack(int maxsize = 10) : SIZE_S(maxsize) { // конструктор
         stack_p = new T[SIZE_S];
@@ -33,6 +34,16 @@ public:
     void print_s(); // вывод стека
     T pop(); // удаление элемента из вершины
     int getStackSize(); // получение размера стека
+
+//    my_stack<std::string>& operator= (std::string const &s){
+//        this->push(s);
+//        return this;
+//    };
+
+//    std::string& operator= (my_stack<std::string> &s){
+//        this = s.pop();
+//        return this;
+//    };
 };
 
 
@@ -64,12 +75,12 @@ T my_stack<T>::pop()
             throw exc::EStackEmpty("Stack is empty!");
         T s;
         s = stack_p[top - 1]; // запоминаем удаляемый эл-т для ретерна
-        stack_p[--top] = 0; // удаляем сам этот элемент
+        stack_p[--top]; // удаляем сам этот элемент // если оставить = 0, то при стринге компилятор будет ругаться на перегрузку =
         return s;
     }
     catch (const exc::EStackException& e){
         std::cerr << "Error: " << e.what() << std::endl;
-        return -1;
+        return 0;
     }
 }
 
